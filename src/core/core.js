@@ -60,7 +60,7 @@ function getSoundFilenamForChar(c)
     while (codeHex.length < 4) {
         codeHex = "0" + codeHex;
     }
-    result += codeHex + ".ogg";
+    result += codeHex + ".$CA";
     return result;
 }
 
@@ -177,9 +177,7 @@ function showDownloadDialog(parent, properties) {
  */
 function checkForVoices(parent)
 {
-    if (!GCompris.DownloadManager.haveLocalResource(
-            GCompris.DownloadManager.getVoicesResourceForLocale(
-                    GCompris.ApplicationSettings.locale))) {
+    if (!GCompris.DownloadManager.areVoicesRegistered()) {
         showMessageDialog(parent,
                 qsTr("Missing sound files!") + '\n'
                 + qsTr("This activity makes use of language specific sound files, that are not yet installed on your system.")
