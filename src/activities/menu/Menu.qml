@@ -200,6 +200,7 @@ ActivityBase {
                         particles.burst(10)
                         ActivityInfoTree.filterByTag(modelData.tag)
                         ActivityInfoTree.filterLockedActivities()
+                        ActivityInfoTree.filterEnabledActivities()
                         menuActivity.currentTag = modelData.tag
                         section.currentIndex = index
                     }
@@ -469,6 +470,7 @@ ActivityBase {
         onClose: {
             ActivityInfoTree.filterByTag(menuActivity.currentTag)
             ActivityInfoTree.filterLockedActivities()
+            ActivityInfoTree.filterEnabledActivities()
             home()
         }
     }
