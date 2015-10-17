@@ -1,11 +1,10 @@
-/* GCompris - Babyshapes.qml
+/* GCompris - Colors.qml
  *
- * Copyright (C) 2015 Pulkit Gupta <pulkitgenius@gmail.com>
+ * Copyright (C) 2014 Bruno Coudoin <bruno.coudoin@gcompris.net>
  *
- * Authors:
- *   Bruno Coudoin (bruno.coudoin@gcompris.net) / Andre Connes (andre.connes@toulouse.iufm.fr) (GTK+ version)
- *   Pulkit Gupta <pulkitgenius@gmail.com>  (Qt Quick port)
- *   Shivansh Bajaj<bajajshivansh1@gmail.com>
+ * Original activity in the Gtk+ version of GCompris by
+ * Pascal Georges <pascal.georges1@free.fr>
+ *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
  *   the Free Software Foundation; either version 3 of the License, or
@@ -19,16 +18,14 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
+
 import QtQuick 2.1
+import GCompris 1.0
 
-import "../babymatch"
+import "BodyParts.js" as Dataset
 
-Babymatch {
-    id: activity
-
-    onStart: focus = true
-    onStop: {}
-
-    url: "qrc:/gcompris/src/activities/solarsystem/resource/"
-    levelCount: 3
+FindIt {
+    mode: ""
+    dataset: Dataset
+    backgroundImg: "qrc:/gcompris/src/activities/bodyparts/resource/background1.svg"
 }

@@ -22,180 +22,35 @@
 import QtQuick 2.0
 
 QtObject {
-   property string instruction: qsTr("Drag and Drop the planets to their respective position")
+   property string instruction: qsTr("Drag and Drop the Dwarf planets to their respective position")
    property variant levels: [
-
-      {
-          "pixmapfile" : "images/Mercury.png",
-          "x" : "0.16",
-          "y" : "0.5",
-          "height":"0.07",
-          "width":"0.07"
-      },
-      {
-          "pixmapfile" : "images/vinus.png",
-          "x" : "0.24",
-          "y" : "0.5",
-          "height":"0.07",
-          "width":"0.07"
-      },
-      {
-          "pixmapfile" : "images/earth.png",
-          "x" : "0.32",
-          "y" : "0.5",
-          "height":"0.07",
-          "width":"0.07"
-      },
-      {
-          "pixmapfile" : "images/Mars.png",
-          "x" : "0.4",
-          "y" : "0.5",
-          "height":"0.07",
-          "width":"0.07"      },
+        {
+            "pixmapfile" : "images/stars.jpg",
+            "type" : "SHAPE_BACKGROUND_IMAGE_FULLSCREEN",
+        },
         {
             "pixmapfile" : "images/ceres.png",
-            "x" : "0.48",
-            "y" : "0.5",
-            "height":"0.07",
-            "width":"0.07"
+            "x" : "0.3",
+            "y" : "0.3",
+            "height":"0.15",
+            "width":"0.15",
+            "toolTipText":"Ceres"
         },
-      {
-          "pixmapfile" : "images/jupiter.png",
-          "x" : "0.56",
-          "y" : "0.5",
-          "height":"0.1",
-          "width":"0.1"
-      },
-      {
-          "pixmapfile" : "images/planet-saturn.png",
-          "x" : "0.64",
-          "y" : "0.5",
-          "height":"0.1",
-          "width":"0.1"
-      },
-      {
-          "pixmapfile" : "images/uranus.png",
-          "x" : "0.72",
-          "y" : "0.5",
-          "height":"0.1",
-          "width":"0.1"
-      },
-      {
-          "pixmapfile" : "images/neptune.png",
-          "x" : "0.8",
-          "y" : "0.5",
-          "height":"0.1",
-          "width":"0.1"
-      },
         {
             "pixmapfile" : "images/pluto.png",
-            "x" : "0.88",
-            "y" : "0.5",
-            "height":"0.1",
-            "width":"0.1"
+            "x" : "0.6",
+            "y" : "0.6",
+            "height":"0.15",
+            "width":"0.15",
+            "toolTipText":"Pluto"
         },
         {
             "pixmapfile" : "images/eris.png",
-            "x" : "0.96",
-            "y" : "0.5",
-            "height":"0.1",
-            "width":"0.1"
-        },
-       {
-            "pixmapfile" : "images/circ.png",
-            "x" : "0.16",
-            "y" : "0.5",
-            "type" : "SHAPE_BACKGROUND",
-            "height":"0.1",
-            "width":"0.1"
-        },
-        {
-             "pixmapfile" : "images/circ.png",
-             "x" : "0.24",
-             "y" : "0.5",
-             "type" : "SHAPE_BACKGROUND",
-            "height":"0.1",
-            "width":"0.1"
-         },
-        {
-             "pixmapfile" : "images/circ.png",
-             "x" : "0.32",
-             "y" : "0.5",
-             "type" : "SHAPE_BACKGROUND",
-            "height":"0.1",
-            "width":"0.1"
-         },
-
-        {
-             "pixmapfile" : "images/circ.png",
-             "x" : "0.4",
-             "y" : "0.5",
-             "type" : "SHAPE_BACKGROUND",
-            "height":"0.1",
-            "width":"0.1"
-         },
-
-        {
-             "pixmapfile" : "images/circ.png",
-             "x" : "0.48",
-             "y" : "0.5",
-             "type" : "SHAPE_BACKGROUND",
-            "height":"0.1",
-            "width":"0.1"
-         },
-
-        {
-             "pixmapfile" : "images/circ.png",
-             "x" : "0.56",
-             "y" : "0.5",
-             "type" : "SHAPE_BACKGROUND",
-            "height":"0.1",
-            "width":"0.1"
-         },
-
-        {
-             "pixmapfile" : "images/circ.png",
-             "x" : "0.64",
-             "y" : "0.5",
-             "type" : "SHAPE_BACKGROUND",
-            "height":"0.1",
-            "width":"0.1"
-         },
-
-        {
-             "pixmapfile" : "images/circ.png",
-             "x" : "0.72",
-             "y" : "0.5",
-             "type" : "SHAPE_BACKGROUND",
-            "height":"0.1",
-            "width":"0.1"
-         },
-
-        {
-             "pixmapfile" : "images/circ.png",
-             "x" : "0.80",
-             "y" : "0.5",
-             "type" : "SHAPE_BACKGROUND",
-            "height":"0.1",
-            "width":"0.1"
-         },
-
-        {
-             "pixmapfile" : "images/circ.png",
-             "x" : "0.88",
-             "y" : "0.5",
-             "type" : "SHAPE_BACKGROUND",
-             "height":"0.1",
-             "width":"0.1"
-         },
-        {
-             "pixmapfile" : "images/circ.png",
-             "x" : "0.96",
-             "y" : "0.5",
-             "type" : "SHAPE_BACKGROUND",
-             "height":"0.1",
-             "width":"0.1"
-         },
-
+            "x" : "0.9",
+            "y" : "0.9",
+            "height":"0.15",
+            "width":"0.15",
+            "toolTipText":"Eris"
+        }
    ]
 }

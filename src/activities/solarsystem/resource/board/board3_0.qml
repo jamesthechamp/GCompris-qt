@@ -4,7 +4,7 @@
  *
  * Authors:
  *   Bruno Coudoin <bruno.coudoin@gcompris.net> (GTK+ version)
- *   Pulkit Gupta <pulkitgenius@gmail.com> (Qt Quick port)
+ *   Shivansh Bajaj<bajajshivansh1@gmail.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,76 +22,99 @@
 import QtQuick 2.0
 
 QtObject {
-   property string instruction: qsTr("Drag and Drop the planets to their respective position")
+   property string instruction: qsTr("Drag and Drop the planets and dwarf planets to their respective position")
    property variant levels: [
-       {
+        {
             "pixmapfile" : "images/stars.jpg",
-            "type" : "SHAPE_BACKGROUND_IMAGE",
+            "type" : "SHAPE_BACKGROUND_IMAGE_FULLSCREEN",
         },
       {
           "pixmapfile" : "images/Mercury.png",
-          "x" : "0.2",
-          "y" : "0.2",
-          "height":"0.15",
-          "width":"0.15",
-          "toolTipText":"Mercury"
+          "x" : "0.16",
+          "y" : "0.1",
+          "height":"0.1",
+          "width":"0.1",
+            "toolTipText":"Mercury"
       },
       {
           "pixmapfile" : "images/vinus.png",
-          "x" : "0.3",
-          "y" : "0.3",
-          "height":"0.15",
-          "width":"0.15",
+          "x" : "0.24",
+          "y" : "0.18",
+          "height":"0.11",
+          "width":"0.11",
             "toolTipText":"Venus"
       },
       {
           "pixmapfile" : "images/earth.png",
-          "x" : "0.4",
-          "y" : "0.4",
-          "height":"0.15",
-          "width":"0.15",
+          "x" : "0.32",
+          "y" : "0.26",
+          "height":"0.12",
+          "width":"0.12",
             "toolTipText":"Earth"
       },
       {
           "pixmapfile" : "images/Mars.png",
-          "x" : "0.5",
-          "y" : "0.5",
-          "height":"0.15",
-          "width":"0.15",
+          "x" : "0.4",
+          "y" : "0.34",
+          "height":"0.1",
+          "width":"0.1",
             "toolTipText":"Mars"
-       },
+        },
+        {
+            "pixmapfile" : "images/ceres.png",
+            "x" : "0.48",
+            "y" : "0.42",
+            "height":"0.05",
+            "width":"0.05",
+            "toolTipText":"Ceres(Dwarf-planet)"
+        },
       {
           "pixmapfile" : "images/jupiter.png",
-          "x" : "0.6",
-          "y" : "0.6",
+          "x" : "0.54",
+          "y" : "0.48",
           "height":"0.15",
           "width":"0.15",
             "toolTipText":"Jupiter"
       },
       {
           "pixmapfile" : "images/planet-saturn.png",
-          "x" : "0.7",
-          "y" : "0.7",
-          "height":"0.15",
-          "width":"0.15",
+          "x" : "0.64",
+          "y" : "0.55",
+          "height":"0.14",
+          "width":"0.14",
             "toolTipText":"Saturn"
       },
       {
           "pixmapfile" : "images/uranus.png",
-          "x" : "0.8",
-          "y" : "0.8",
-          "height":"0.15",
-          "width":"0.15",
+          "x" : "0.72",
+          "y" : "0.66",
+          "height":"0.12",
+          "width":"0.12",
             "toolTipText":"Uranus"
       },
       {
           "pixmapfile" : "images/neptune.png",
-          "x" : "0.9",
-          "y" : "0.9",
-          "height":"0.15",
-          "width":"0.15",
+          "x" : "0.8",
+          "y" : "0.74",
+          "height":"0.12",
+          "width":"0.12",
             "toolTipText":"Neptune"
-      }
-
+      },
+        {
+            "pixmapfile" : "images/pluto.png",
+            "x" : "0.88",
+            "y" : "0.82",
+            "height":"0.051",
+            "width":"0.051",
+            "toolTipText":"Pluto(Dwarf-planet)"
+        },
+        {
+            "pixmapfile" : "images/eris.png",
+            "x" : "0.96",
+            "y" : "0.9",
+            "height":"0.05",
+            "width":"0.05",
+            "toolTipText":"Eris(Dwarf-planet)"
+        }
    ]
 }

@@ -62,6 +62,7 @@ ActivityBase {
             property alias file: file
             property alias grid: grid
             property alias backgroundImage: backgroundImage
+            property alias backgroundImageMax: backgroundImageMax
             property alias leftWidget: leftWidget
             property alias instruction: instruction
             property alias toolTip: toolTip
@@ -164,7 +165,11 @@ ActivityBase {
 
         Rectangle {
             id: grid
-
+            Image {
+                id: backgroundImageMax
+                source: ""
+                anchors.fill:parent
+            }
             color: "transparent"
             z: 2
             x: background.vert ? 90 * ApplicationInfo.ratio : 0

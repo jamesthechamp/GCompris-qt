@@ -70,7 +70,7 @@ function initLevel() {
     
     items.backgroundPiecesModel.clear()
     items.backgroundImage.source = ""
-
+    items.backgroundImageMax.source = ""
     items.availablePieces.view.currentDisplayedGroup = 0
     items.availablePieces.view.itemsDropped = 0
     items.availablePieces.view.previousNavigation = 1
@@ -164,6 +164,9 @@ function initLevel() {
         else {
             if(levelData.levels[i].type === "SHAPE_BACKGROUND_IMAGE") {
                 items.backgroundImage.source = url + levelData.levels[i].pixmapfile
+            }
+            else if(levelData.levels[i].type === "SHAPE_BACKGROUND_IMAGE_FULLSCREEN") {
+                items.backgroundImageMax.source = url + levelData.levels[i].pixmapfile
             }
             else {
                 items.backgroundPiecesModel.append( {

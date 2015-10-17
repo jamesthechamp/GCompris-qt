@@ -27,12 +27,12 @@ ActivityInfo {
   icon: "solarsystem/solarsystem.svg"
   author: "Shivansh Bajaj &lt;bajajshivansh1@gmail.com&gt;"
   demo: true
-  title: qsTr("solars system")
-  description: qsTr("Drag and Drop the planets to their in respective order position")
+  title: "solars system"
+  description: "Drag and Drop the planets to their in respective order position"
 //  intro: "slide the planets to their in respective order "
   goal: ""
   prerequisite: ""
-  manual: qsTr("")
-  credit: qsTr("")
+  manual: ""
+  credit: ""
   section: "experiment"
 }
