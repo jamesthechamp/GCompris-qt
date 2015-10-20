@@ -32,40 +32,40 @@ QtObject {
           "pixmapfile" : "images/Mercury.png",
           "x" : "0.2",
           "y" : "0.2",
-          "height":"0.15",
-          "width":"0.15",
+          "height":"0.1",
+          "width":"0.1",
           "toolTipText":"Mercury"
       },
       {
           "pixmapfile" : "images/vinus.png",
           "x" : "0.3",
           "y" : "0.3",
-          "height":"0.15",
-          "width":"0.15",
+          "height":"0.11",
+          "width":"0.11",
             "toolTipText":"Venus"
       },
       {
           "pixmapfile" : "images/earth.png",
           "x" : "0.4",
           "y" : "0.4",
-          "height":"0.15",
-          "width":"0.15",
+          "height":"0.12",
+          "width":"0.12",
             "toolTipText":"Earth"
       },
       {
           "pixmapfile" : "images/Mars.png",
           "x" : "0.5",
           "y" : "0.5",
-          "height":"0.15",
-          "width":"0.15",
+          "height":"0.1",
+          "width":"0.1",
             "toolTipText":"Mars"
        },
       {
           "pixmapfile" : "images/jupiter.png",
           "x" : "0.6",
           "y" : "0.6",
-          "height":"0.15",
-          "width":"0.15",
+          "height":"0.2",
+          "width":"0.2",
             "toolTipText":"Jupiter"
       },
       {
@@ -80,16 +80,16 @@ QtObject {
           "pixmapfile" : "images/uranus.png",
           "x" : "0.8",
           "y" : "0.8",
-          "height":"0.15",
-          "width":"0.15",
+          "height":"0.13",
+          "width":"0.13",
             "toolTipText":"Uranus"
       },
       {
           "pixmapfile" : "images/neptune.png",
           "x" : "0.9",
           "y" : "0.9",
-          "height":"0.15",
-          "width":"0.15",
+          "height":"0.12",
+          "width":"0.12",
             "toolTipText":"Neptune"
       }
 

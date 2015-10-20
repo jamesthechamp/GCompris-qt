@@ -26,7 +26,7 @@ QtObject {
    property variant levels: [
         {
             "pixmapfile" : "images/stars.jpg",
-            "type" : "SHAPE_BACKGROUND_IMAGE_FULLSCREEN",
+            "type" : "SHAPE_BACKGROUND_IMAGE",
         },
         {
             "pixmapfile" : "images/ceres.png",
