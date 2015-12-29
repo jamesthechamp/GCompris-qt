@@ -4,7 +4,7 @@ else(SAILfISHOS)
   cmake_minimum_required(VERSION 2.8.12)
 endif()
 
-project(gcompris C CXX)
+project(gcompris-qt C CXX)
 
 # Set c++11 support
 include(CheckCXXCompilerFlag)
@@ -22,7 +22,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${my_cxx_flags}")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${my_cxx_flags}")
 
 set(GCOMPRIS_MAJOR_VERSION 0)
-set(GCOMPRIS_MINOR_VERSION 40)
+set(GCOMPRIS_MINOR_VERSION 60)
 set(GCOMPRIS_PATCH_VERSION 0)
 
 # Set executable filename
@@ -82,14 +82,14 @@ if(KF5_FOUND)
     include(KDEInstallDirs)
 endif(KF5_FOUND)
 
-FIND_PROGRAM(LCONVERT_EXECUTABLE lconvert
+FIND_PROGRAM(LCONVERT_EXECUTABLE lconvert lconvert-qt5
   PATHS
   ${Qt5_DIR}/../../../bin/
   /usr/local/bin
   /usr/bin/
   NO_DEFAULT_PATH
 )
-FIND_PROGRAM(LRELEASE_EXECUTABLE lrelease
+FIND_PROGRAM(LRELEASE_EXECUTABLE lrelease lrelease-qt5
   PATHS
   ${Qt5_DIR}/../../../bin/
   /usr/local/bin
@@ -114,7 +114,7 @@ endif(WITH_DOWNLOAD)
 # Set output directory
 if(CMAKE_HOST_APPLE)
   set(_bundle_bin gcompris-qt.app/Contents/MacOS)
-  set(_data_dest_dir bin/${_bundle_bin})
+  set(_data_dest_dir bin/${_bundle_bin}/../Resources)
 elseif(ANDROID)
   set(_data_dest_dir android/assets)
 else()
@@ -132,7 +132,12 @@ if(ANDROID)
     set(ANDROID_PACKAGE "net.gcompris.full")
   endif()
   add_subdirectory(android)
-else(ANDROID)
+elseif(CMAKE_HOST_APPLE)
+  # MacOSX build
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+  set(GCOMPRIS_TRANSLATIONS_DIR ${CMAKE_BINARY_DIR}/${_data_dest_dir}/translations CACHE INTERNAL "" FORCE)
+  set(GCOMPRIS_RCC_DIR ${CMAKE_BINARY_DIR}/${_data_dest_dir}/rcc CACHE INTERNAL "" FORCE)
+else()
   # Desktop build
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
   set(GCOMPRIS_TRANSLATIONS_DIR ${CMAKE_BINARY_DIR}/${_data_dest_dir}/translations CACHE INTERNAL "" FORCE)
@@ -246,10 +251,8 @@ add_custom_target(
 set(ARCHIVE_NAME ${CMAKE_PROJECT_NAME}-${GCOMPRIS_VERSION})
 add_custom_target(dist
     COMMAND git archive --prefix=${ARCHIVE_NAME}/ HEAD
-        | bzip2 > ${CMAKE_BINARY_DIR}/${ARCHIVE_NAME}.tar.bz2
+        | xz > ${CMAKE_BINARY_DIR}/${ARCHIVE_NAME}.tar.xz
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-
-add_subdirectory(src)
 
 if(KF5_FOUND)
     add_subdirectory(docs/docbook)
@@ -264,72 +267,80 @@ endif()
 # qml-box2d
 #
 
-set(QML_BOX2D_MODULE "auto" CACHE STRING "Policy for qml-box2d module [auto|submodule|system]")
+set(QML_BOX2D_MODULE "auto" CACHE STRING "Policy for qml-box2d module [auto|submodule|system|disabled]")
 
-include(qt_helper)
-
-getQtQmlPath(_qt_qml_system_path)
-set (_box2d_system_dir "${_qt_qml_system_path}/Box2D.2.0")
-
-if (${QML_BOX2D_MODULE} STREQUAL "submodule")
-  message(STATUS "Building qml-box2d module from submodule")
-  set(_need_box2d_submodule "TRUE")
+if (${QML_BOX2D_MODULE} STREQUAL "disabled")
+  # disable all activities depending on qml-box2d
+  set(_disabled_activities "balancebox")
+  message(STATUS "Disabling qml-box2d module and depending activities: ${_disabled_activities}")
 else()
-  # try to find module in system scope
-  find_library(QML_BOX2D_LIBRARY NAMES Box2D libBox2D PATHS ${_box2d_system_dir} NO_DEFAULT_PATH)
-  if (QML_BOX2D_LIBRARY)
-    message(STATUS "Using system qml-box2d plugin at ${QML_BOX2D_LIBRARY}")
-    # for packaging builds, copy the module manually to the correct location
-    if(SAILFISHOS)
-      file(COPY ${_box2d_system_dir}/qmldir ${QML_BOX2D_LIBRARY} DESTINATION share/harbour-gcompris-qt/lib/qml/Box2D.2.0)
-    elseif(ANDROID)
-      file(COPY ${_box2d_system_dir}/qmldir ${QML_BOX2D_LIBRARY} DESTINATION lib/qml/Box2D.2.0)
-    endif()
-    # FIXME: add others as needed
+  include(qt_helper)
+
+  getQtQmlPath(_qt_qml_system_path)
+  set (_box2d_system_dir "${_qt_qml_system_path}/Box2D.2.0")
+
+  if (${QML_BOX2D_MODULE} STREQUAL "submodule")
+    message(STATUS "Building qml-box2d module from submodule")
+    set(_need_box2d_submodule "TRUE")
   else()
-    if (${QML_BOX2D_MODULE} STREQUAL "auto")
-      message(STATUS "Did not find the qml-box2d module in system scope, falling back to submodule build ...")
-      set (_need_box2d_submodule "TRUE")
+    # try to find module in system scope
+    find_library(QML_BOX2D_LIBRARY NAMES Box2D libBox2D PATHS ${_box2d_system_dir} NO_DEFAULT_PATH)
+    if (QML_BOX2D_LIBRARY)
+      message(STATUS "Using system qml-box2d plugin at ${QML_BOX2D_LIBRARY}")
+      # for packaging builds, copy the module manually to the correct location
+      if(SAILFISHOS)
+        file(COPY ${_box2d_system_dir}/qmldir ${QML_BOX2D_LIBRARY} DESTINATION share/harbour-gcompris-qt/lib/qml/Box2D.2.0)
+      elseif(ANDROID)
+        file(COPY ${_box2d_system_dir}/qmldir ${QML_BOX2D_LIBRARY} DESTINATION lib/qml/Box2D.2.0)
+      endif()
+      # FIXME: add others as needed
     else()
-      message(FATAL_ERROR "Did not find the qml-box2d module in system scope and submodule build was not requested. Can't continue!")
+      if (${QML_BOX2D_MODULE} STREQUAL "auto")
+        message(STATUS "Did not find the qml-box2d module in system scope, falling back to submodule build ...")
+        set (_need_box2d_submodule "TRUE")
+      else()
+        message(FATAL_ERROR "Did not find the qml-box2d module in system scope and submodule build was not requested. Can't continue!")
+      endif()
+    endif()
+  endif()
+
+  if (_need_box2d_submodule)
+    # build qml-box2d ourselves from submodule
+    include(ExternalProject)
+    get_property(_qmake_program TARGET ${Qt5Core_QMAKE_EXECUTABLE} PROPERTY IMPORT_LOCATION)
+    set (_box2d_source_dir ${CMAKE_CURRENT_SOURCE_DIR}/external/qml-box2d)
+    if(WIN32)
+      set (_box2d_library_dir "release/")
+      set (_box2d_library_file "Box2D.dll")
+    else()
+      set (_box2d_library_dir "")
+      set (_box2d_library_file "libBox2D.so")
+    endif()
+    set (_box2d_install_dir ${CMAKE_CURRENT_BINARY_DIR}/lib/qml/Box2D.2.0)
+    # make sure submodule is up2date
+    find_package(Git)
+    if(GIT_FOUND)
+      execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init)
+    endif()
+
+    ExternalProject_Add(qml_box2d
+      DOWNLOAD_COMMAND ""
+      SOURCE_DIR ${_box2d_source_dir}
+      CONFIGURE_COMMAND ${_qmake_program} ${_box2d_source_dir}/box2d.pro
+      BUILD_COMMAND ${CMAKE_MAKE_PROGRAM}
+      INSTALL_DIR ${_box2d_install_dir}
+      INSTALL_COMMAND cp ${_box2d_library_dir}${_box2d_library_file} ${_box2d_source_dir}/qmldir ${_box2d_install_dir}
+      )
+
+    add_library(qml-box2d SHARED IMPORTED)
+    set_target_properties(qml-box2d PROPERTIES IMPORTED_LOCATION ${_box2d_install_dir}/${_box2d_library_file})
+
+    if(SAILFISHOS)
+      install(DIRECTORY ${_box2d_install_dir} DESTINATION share/harbour-gcompris-qt/lib/qml)
+    else()
+      install(DIRECTORY ${_box2d_install_dir} DESTINATION lib/qml)
     endif()
   endif()
 endif()
 
-if (_need_box2d_submodule)
-  # build qml-box2d ourselves from submodule
-  include(ExternalProject)
-  get_property(_qmake_program TARGET ${Qt5Core_QMAKE_EXECUTABLE} PROPERTY IMPORT_LOCATION)
-  set (_box2d_source_dir ${CMAKE_CURRENT_SOURCE_DIR}/external/qml-box2d)
-  if(WIN32)
-    set (_box2d_library_dir "release/")
-    set (_box2d_library_file "Box2D.dll")
-  else()
-    set (_box2d_library_dir "")
-    set (_box2d_library_file "libBox2D.so")
-  endif()
-  set (_box2d_install_dir ${CMAKE_CURRENT_BINARY_DIR}/lib/qml/Box2D.2.0)
-  # make sure submodule is up2date
-  find_package(Git)
-  if(GIT_FOUND)
-    execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init)
-  endif()
-
-  ExternalProject_Add(qml_box2d
-    DOWNLOAD_COMMAND ""
-    SOURCE_DIR ${_box2d_source_dir}
-    CONFIGURE_COMMAND ${_qmake_program} ${_box2d_source_dir}/box2d.pro
-    BUILD_COMMAND ${CMAKE_MAKE_PROGRAM}
-    INSTALL_DIR ${_box2d_install_dir}
-    INSTALL_COMMAND cp ${_box2d_library_dir}${_box2d_library_file} ${_box2d_source_dir}/qmldir ${_box2d_install_dir}
-    )
-
-  add_library(qml-box2d SHARED IMPORTED)
-  set_target_properties(qml-box2d PROPERTIES IMPORTED_LOCATION ${_box2d_install_dir}/${_box2d_library_file})
-
-  if(SAILFISHOS)
-    install(DIRECTORY ${_box2d_install_dir} DESTINATION share/harbour-gcompris-qt/lib/qml)
-  else()
-    install(DIRECTORY ${_box2d_install_dir} DESTINATION lib/qml)
-  endif()
-endif()
+add_subdirectory(src)

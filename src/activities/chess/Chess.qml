@@ -65,8 +65,12 @@ ActivityBase {
             property alias background: background
             property alias bar: bar
             property alias bonus: bonus
-            property int cellSize: Math.min(background.width / (8 + 2),
-                                            background.height / (8 + 3))
+            property int barHeightAddon: ApplicationSettings.isBarHidden ? 1 : 3
+            property bool isPortrait: (background.height > background.width)
+            property int cellSize: items.isPortrait ?
+                                       Math.min(background.width / (8 + 2),
+                                                (background.height - controls.height) / (8 + barHeightAddon)) :
+                                       Math.min(background.width / (8 + 2), background.height / (8 + barHeightAddon))
             property variant fen: activity.fen
             property bool twoPlayer: activity.twoPlayers
             property bool difficultyByLevel: activity.difficultyByLevel
@@ -80,38 +84,41 @@ ActivityBase {
             property bool blackTurn
             property bool gameOver
             property string message
-            property alias trigComputerMove: trigComputerMove            
+            property alias trigComputerMove: trigComputerMove
+
+            Behavior on cellSize { PropertyAnimation { easing.type: Easing.InOutQuad; duration: 1000 } }
         }
 
         onStart: { Activity.start(items) }
         onStop: { Activity.stop() }
 
-        // TODO Imprement a vertical layout
         Grid {
             anchors {
                 top: parent.top
-                topMargin: items.cellSize / 2
+                topMargin: items.isPortrait ? 0 : items.cellSize / 2
                 leftMargin: 10 * ApplicationInfo.ratio
                 rightMargin: 10 * ApplicationInfo.ratio
             }
-            columns: 3
-            rows: 1
-            width: background.width
+            columns: (items.isPortrait==true)?1:3
+            rows: (items.isPortrait==true)?2:1
+            width: (items.isPortrait==true)?undefined:background.width
+            anchors.horizontalCenter: parent.horizontalCenter
             spacing: 10
             horizontalItemAlignment: Grid.AlignHCenter
             verticalItemAlignment: Grid.AlignVCenter
 
             Column {
                 id: controls
-                spacing: 10
                 anchors {
                     leftMargin: 10
                     rightMargin: 10
                 }
-                width: Math.max(undo.width * 1.2,
-                                Math.min(
-                                    (background.width * 0.9 - undo.width - chessboard.width),
-                                    (background.width - chessboard.width) / 2))
+                width: items.isPortrait ?
+                           parent.width :
+                           Math.max(undo.width * 1.2,
+                                    Math.min(
+                                        (background.width * 0.9 - undo.width - chessboard.width),
+                                        (background.width - chessboard.width) / 2))
 
                 GCText {
                     color: "black"
@@ -123,45 +130,53 @@ ActivityBase {
                     wrapMode: TextEdit.WordWrap
                 }
 
-                Button {
-                    id: undo
+                Grid {
+                    spacing: 10
+                    columns: items.isPortrait ? 3 : 1
                     anchors.horizontalCenter: parent.horizontalCenter
-                    height: 30 * ApplicationInfo.ratio
-                    text: qsTr("Undo");
-                    style: GCButtonStyle {}
-                    onClicked: Activity.undo()
-                    opacity: items.history.length > 0 ? 1 : 0
-                    Behavior on opacity {
-                        PropertyAnimation {
-                            easing.type: Easing.InQuad
-                            duration: 200
+                    horizontalItemAlignment: Grid.AlignHCenter
+                    verticalItemAlignment: Grid.AlignVCenter
+
+                    Button {
+                        id: undo
+                        height: 30 * ApplicationInfo.ratio
+                        text: qsTr("Undo");
+                        style: GCButtonStyle {}
+                        onClicked: Activity.undo()
+                        enabled: items.history.length > 0 ? 1 : 0
+                        opacity: enabled
+                        Behavior on opacity {
+                            PropertyAnimation {
+                                easing.type: Easing.InQuad
+                                duration: 200
+                            }
                         }
                     }
-                }
 
-                Button {
-                    id: redo
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    height: 30 * ApplicationInfo.ratio
-                    text: qsTr("Redo");
-                    style: GCButtonStyle {}
-                    onClicked: Activity.redo()
-                    opacity: items.redo_stack.length > 0 ? 1 : 0
-                    Behavior on opacity {
-                        PropertyAnimation {
-                            easing.type: Easing.InQuad
-                            duration: 200
+                    Button {
+                        id: redo
+                        height: 30 * ApplicationInfo.ratio
+                        text: qsTr("Redo");
+                        style: GCButtonStyle {}
+                        onClicked: Activity.redo()
+                        enabled: items.redo_stack.length > 0 ? 1 : 0
+                        opacity: enabled
+                        Behavior on opacity {
+                            PropertyAnimation {
+                                easing.type: Easing.InQuad
+                                duration: 200
+                            }
                         }
                     }
-                }
 
-                Button {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    height: 30 * ApplicationInfo.ratio
-                    text: qsTr("Swap");
-                    style: GCButtonStyle {}
-                    opacity: items.twoPlayer
-                    onClicked: chessboard.swap()
+                    Button {
+                        height: 30 * ApplicationInfo.ratio
+                        text: qsTr("Swap");
+                        style: GCButtonStyle {}
+                        enabled: items.twoPlayer
+                        opacity: enabled
+                        onClicked: chessboard.swap()
+                    }
                 }
             }
 
@@ -287,7 +302,7 @@ ActivityBase {
                         } else {
                             var pos = parent.pos
                             // Force recalc of the old x,y position
-                            parent.pos = 0
+                            parent.pos = -1
                             pieces.getPieceAt(pos).move(pos)
                         }
                     }

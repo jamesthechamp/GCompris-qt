@@ -19,8 +19,8 @@
  *   along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 #include <QtDebug>
-#include <QtGui/QGuiApplication>
-#include <QtQuick/QQuickWindow>
+#include <QGuiApplication>
+#include <QQuickWindow>
 #include <QQmlApplicationEngine>
 #include <QStandardPaths>
 #include <QObject>
@@ -105,11 +105,23 @@ QString loadTranslation(QSettings &config, QTranslator &translator)
 
 int main(int argc, char *argv[])
 {
-	QGuiApplication app(argc, argv);
+    // Disable it because we already support HDPI display natively
+    qunsetenv("QT_DEVICE_PIXEL_RATIO");
+
+    QGuiApplication app(argc, argv);
     app.setOrganizationName("KDE");
     app.setApplicationName(GCOMPRIS_APPLICATION_NAME);
     app.setOrganizationDomain("kde.org");
     app.setApplicationVersion(ApplicationInfo::GCVersion());
+
+#if defined(Q_OS_MAC)
+    // Sandboxing on MacOSX as documented in:
+    // http://doc.qt.io/qt-5/osx-deployment.html
+    QDir dir(QGuiApplication::applicationDirPath());
+    dir.cdUp();
+    dir.cd("Plugins");
+    QGuiApplication::setLibraryPaths(QStringList(dir.absolutePath()));
+#endif
 
     // Local scope for config
     QSettings config(QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) +

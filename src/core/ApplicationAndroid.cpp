@@ -21,7 +21,7 @@
 
 #include "ApplicationSettings.h"
 #include "ApplicationInfo.h"
-#include <QtAndroidExtras/QAndroidJniObject>
+#include <QAndroidJniObject>
 #include <QDebug>
 #include <QtAndroid>
 
@@ -92,3 +92,8 @@ int ApplicationInfo::getRequestedOrientation()
     return orientation;
 }
 
+void ApplicationInfo::setKeepScreenOn(bool value)
+{
+    QAndroidJniObject activity = QtAndroid::androidActivity();
+    activity.callMethod<void>("setKeepScreenOn", "(Z)V", value);
+}

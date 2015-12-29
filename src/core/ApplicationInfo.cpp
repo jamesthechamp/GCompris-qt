@@ -24,13 +24,13 @@
 
 #include "ApplicationInfo.h"
 
-#include <QtCore/QtMath>
-#include <QtCore/QUrl>
-#include <QtCore/QUrlQuery>
-#include <QtGui/QGuiApplication>
-#include <QtGui/QScreen>
-#include <QtCore/QLocale>
-#include <QtQuick/QQuickWindow>
+#include <QtMath>
+#include <QUrl>
+#include <QUrlQuery>
+#include <QGuiApplication>
+#include <QScreen>
+#include <QLocale>
+#include <QQuickWindow>
 #include <QStandardPaths>
 #include <QSensor>
 
@@ -128,7 +128,7 @@ QString ApplicationInfo::getFilePath(const QString &file)
 #if defined(Q_OS_ANDROID)
     return QString("assets:/%1").arg(file);
 #elif defined(Q_OS_MAC)
-    return QString("%1/rcc/%2").arg(QCoreApplication::applicationDirPath(), file);
+    return QString("%1/../Resources/rcc/%2").arg(QCoreApplication::applicationDirPath(), file);
 #else
     return QString("%1/%2/rcc/%3").arg(QCoreApplication::applicationDirPath(), GCOMPRIS_DATA_FOLDER, file);
 #endif

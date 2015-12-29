@@ -27,9 +27,8 @@
 #include <config.h>
 #include "ApplicationSettings.h"
 
-#include <qqml.h>
-#include <QtCore/QObject>
-#include <QtQml/QQmlPropertyMap>
+#include <QObject>
+#include <QQmlPropertyMap>
 #include <QQmlEngine>
 #include <QtGlobal>
 
@@ -293,6 +292,14 @@ public:
      *                    to be checked (e.g. "QTiltSensor").
      */
     Q_INVOKABLE bool sensorIsSupported(const QString& sensorType);
+
+    /**
+     * Toggles activation of screensaver on android
+     *
+     * @param value Whether screensaver should be disabled (true) or
+     *              enabled (false).
+     */
+    Q_INVOKABLE void setKeepScreenOn(bool value);
 
     /// @endcond
 

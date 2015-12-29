@@ -22,16 +22,18 @@
 #include "ApplicationSettings.h"
 #include "ApplicationInfo.h"
 
-#include <QtCore/qmath.h>
-#include <QtCore/QUrl>
-#include <QtCore/QUrlQuery>
-#include <QtGui/QGuiApplication>
-#include <QtGui/QScreen>
-#include <QtCore/QLocale>
+#include <qmath.h>
+#include <QUrl>
+#include <QUrlQuery>
+#include <QGuiApplication>
+#include <QScreen>
+#include <QLocale>
 
 #include <QSettings>
 #include <QStandardPaths>
 #include <QDebug>
+
+#include <QtQml>
 
 #define GC_DEFAULT_FONT "Andika-R.ttf"
 #define GC_DEFAULT_FONT_CAPITALIZATION 0 // Font.MixedCase
@@ -66,6 +68,8 @@ static const QString NO_CURSOR = "noCursor";
 static const QString DEMO_KEY = "demo";
 static const QString KIOSK_KEY = "kiosk";
 static const QString SECTION_VISIBLE = "sectionVisible";
+
+static const QString PROGRESS_KEY = "progress";
 
 ApplicationSettings *ApplicationSettings::m_instance = NULL;
 
@@ -351,6 +355,22 @@ template<class T> void ApplicationSettings::updateValueInConfig(const QString& g
     m_config.setValue(key, value);
     m_config.endGroup();
     m_config.sync();
+}
+
+int ApplicationSettings::loadActivityProgress(const QString &activity)
+{
+    int progress = 0;
+    m_config.beginGroup(activity);
+    progress = m_config.value(PROGRESS_KEY, 0).toInt();
+    m_config.endGroup();
+    qDebug() << "loaded progress for activity" << activity << ":" << progress;
+    return progress;
+
+}
+
+void ApplicationSettings::saveActivityProgress(const QString &activity, int progress)
+{
+    updateValueInConfig(activity, PROGRESS_KEY, progress);
 }
 
 QObject *ApplicationSettings::systeminfoProvider(QQmlEngine *engine,
